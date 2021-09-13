@@ -21,7 +21,7 @@ export const addPosts = async (req, res, next) => {
     try {
       options
         .get(`/api/v2/entries/${lang}/${input}`)
-        .then(async result => {
+        .then(result => {
           var value = result.data.results[0].lexicalEntries.map(val => val);
           var grammar = result.data.results[0].lexicalEntries.map(val => val.lexicalCategory.text);
           grammar = grammar[0];
@@ -68,19 +68,10 @@ export const getPosts = async (req, res) => {
   }
 };
 
-export const getPost = async (req, res) => {
+export const getPostByName = async (req, res) => {
   try {
-    const post = await Posts.find({ searchTerm: { $regex: req.query.find, $options: 'i' } });
-    res.status(201).send(post);
-  } catch (error) {
-    console.log(error);
-    res.status(404).send(`Some thing went wrong in fetching posts ${error}`);
-  }
-};
-
-export const getPostById = async (req, res) => {
-  try {
-    const post = await Posts.findById(req.params.id);
+    const find = req.params.id;
+    const post = await Posts.findOne({ searchTerm: find });
     res.status(201).send(post);
   } catch (error) {
     console.log(error);

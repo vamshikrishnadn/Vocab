@@ -3,21 +3,28 @@ import dotenv from 'dotenv';
 import postRouter from './routes/posts.js';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
+import cors from 'cors';
 
 dotenv.config({ path: './config/config.env' });
 
 const app = express();
+
+// Use of bodyParser to extract the data from the request body
 app.use(bodyParser.json());
-mongoose.connect(process.env.MONGODB_URL, () => {
-  console.log('Mongodb connected.');
-});
+
+app.use(morgan('combined'));
+app.use(cors());
+
+// Connecting to the database
+mongoose.connect(process.env.MONGODB_URL);
 // Saving in database and searching in the oxford dictionaries
 app.use('/posts', postRouter);
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/build'));
+}
 
-app.listen(process.env.PORT, () => {
-  console.log(`Successfully started on port ${process.env.PORT}`);
+app.listen(process.env.PORT || 5000, () => {
+  console.log(`Successfully started`);
 });
