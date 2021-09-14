@@ -2,6 +2,7 @@ import * as api from '../api';
 import { FETCH_POSTS, CREATE_POST, FETCH_POST, ERROR } from './type';
 import M from 'materialize-css/dist/js/materialize.min.js';
 
+// Calling actions
 export const fetchPosts = () => async dispatch => {
   const fetchPosts = await api.fetchPosts();
 
@@ -20,7 +21,7 @@ export const addPost = value => async dispatch => {
     });
     M.toast({ html: 'Successfully Added' });
   } catch (error) {
-    window.alert('Search already exists.');
+    M.toast({ html: 'Search already exists.' });
   }
 };
 

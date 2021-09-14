@@ -19,6 +19,7 @@ export const addPosts = async (req, res, next) => {
     return res.status(400).json(`Search already exists with this Input: ${input}`);
   } else {
     try {
+      // Searching the Oxford dictionary
       options
         .get(`/api/v2/entries/${lang}/${input}`)
         .then(result => {
@@ -36,6 +37,7 @@ export const addPosts = async (req, res, next) => {
           var def = sense.map(def => def[0].definitions[0]);
           var shortDef = sense.map(def => def[0].shortDefinitions[0]);
 
+          // Saving the data
           const data = {
             searchTerm,
             definitions: def,
@@ -44,6 +46,7 @@ export const addPosts = async (req, res, next) => {
             language: lang,
             pronunciations,
           };
+          // Saving the data in the database.
           new Posts(data).save();
           res.status(201).send(data);
         })
@@ -59,6 +62,7 @@ export const addPosts = async (req, res, next) => {
 };
 
 export const getPosts = async (req, res) => {
+  // Fetching all posts.
   try {
     const posts = await Posts.find({});
     res.status(201).send(posts);
@@ -69,6 +73,7 @@ export const getPosts = async (req, res) => {
 };
 
 export const getPostByName = async (req, res) => {
+  // Fetching Single post from database.
   try {
     const find = req.params.id;
     const post = await Posts.findOne({ searchTerm: find });

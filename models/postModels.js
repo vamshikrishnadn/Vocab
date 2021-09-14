@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
+// Defining the modal
 const postsSchema = new Schema({
   searchTerm: { type: String, unique: true },
   definitions: [{ type: String }],
@@ -11,6 +12,7 @@ const postsSchema = new Schema({
   pronunciations: { type: String },
 });
 
+// modal connection
 const Posts = mongoose.model('Posts', postsSchema);
 
 export default Posts;

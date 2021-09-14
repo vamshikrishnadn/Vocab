@@ -11,8 +11,9 @@ class AddPosts extends Component {
   }
   onSubmit(e) {
     e.preventDefault();
+    // Adding the word onsubmit
     this.props.addPost(this.state.word);
-    this.setState({ word: '', loader: 'Load' });
+    this.setState({ word: '' });
   }
 
   renderClass() {

@@ -9,6 +9,7 @@ import './styles/index.css';
 
 import reducers from './reducers';
 
+// Applying Promise to wait for some time for the request.
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 
 ReactDOM.render(

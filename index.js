@@ -21,10 +21,17 @@ mongoose.connect(process.env.MONGODB_URL);
 // Saving in database and searching in the oxford dictionaries
 app.use('/posts', postRouter);
 
+// Calling while production is running.
 if (process.env.NODE_ENV === 'production') {
+  // Express will serve up production assets
+  // like our main.js file or main.css file
   app.use(express.static('client/build'));
 }
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Successfully started`);
+// Connecting to port.
+const PORT = process.env.PORT || 5000;
+
+// Database Connection
+app.listen(PORT, () => {
+  console.log(`Successfully started on ${PORT}`);
 });
