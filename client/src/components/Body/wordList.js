@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchPosts, fetchSinglePost } from '../../actions/posts';
+import { fetchPosts, fetchSinglePost, searchByName } from '../../actions/posts';
 import AddPosts from './addPosts';
 import M from 'materialize-css/dist/js/materialize.min.js';
 import $ from 'jquery';
@@ -29,33 +29,25 @@ class WordList extends React.Component {
         </div>
       );
     } else {
-      return this.props.posts
-        .filter(val => {
-          if (this.state.search === '') {
-            return val;
-          } else if (val.searchTerm.toLowerCase().includes(this.state.search.toLocaleLowerCase())) {
-            return val;
-          }
-        })
-        .map(post => {
-          return (
-            <li
-              className='collection-item grey lighten-4 waves-effect waves-grey modal-trigger'
-              href='#modal1'
-              onClick={() => this.props.fetchSinglePost(post.searchTerm)}
-              key={post._id}
-              style={{ width: '100%' }}
-            >
-              <h6 style={{ textTransform: 'capitalize' }}>
-                <b>{post.searchTerm}</b>
-              </h6>
-              <span>
-                <span>({post.speech}) </span>
-                {post.definitions[0]}
-              </span>
-            </li>
-          );
-        });
+      return this.props.posts.map(post => {
+        return (
+          <li
+            className='collection-item grey lighten-4 waves-effect waves-grey modal-trigger'
+            href='#modal1'
+            onClick={() => this.props.fetchSinglePost(post.searchTerm)}
+            key={post._id}
+            style={{ width: '100%' }}
+          >
+            <h6 style={{ textTransform: 'capitalize' }}>
+              <b>{post.searchTerm}</b>
+            </h6>
+            <span>
+              <span>({post.speech}) </span>
+              {post.definitions[0]}
+            </span>
+          </li>
+        );
+      });
     }
   }
 
@@ -83,6 +75,7 @@ class WordList extends React.Component {
     }
   }
   render() {
+    console.log(this.props.posts);
     return (
       <div>
         {/* Navbar starts here */}
@@ -102,6 +95,7 @@ class WordList extends React.Component {
                     value={this.state.search}
                     onChange={e => {
                       this.setState({ search: e.target.value });
+                      this.props.searchByName(e.target.value);
                     }}
                     placeholder='Search Here...'
                   />
@@ -120,16 +114,15 @@ class WordList extends React.Component {
         </div>
         {/* Navbar ends here */}
 
-        <div style={{ position: 'relative' }}>
+        <div>
           <div className='background'>
             <div className='word'>
               <h6>
                 <b>Words List</b>
               </h6>
-              <div className='divider'></div>
             </div>
           </div>
-          <ul style={{ transform: 'translateY(-2%)' }} className='collection'>
+          <ul style={{ transform: 'translateY(-0.5%)' }} className='collection'>
             {this.renderListItems()}
           </ul>
 
@@ -173,4 +166,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { fetchPosts, fetchSinglePost })(WordList);
+export default connect(mapStateToProps, { fetchPosts, fetchSinglePost, searchByName })(WordList);

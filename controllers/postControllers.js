@@ -83,3 +83,16 @@ export const getPostByName = async (req, res) => {
     res.status(404).send(`Some thing went wrong in fetching posts ${error}`);
   }
 };
+
+export const searchByName = async (req, res) => {
+  // Fetching Single post from database.
+  try {
+    const find = req.query.name;
+    console.log('This is calling', find);
+    const post = await Posts.find({ searchTerm: { $regex: find, $options: 'i' } });
+    res.status(201).send(post);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send(`Some thing went wrong in fetching posts ${error}`);
+  }
+};

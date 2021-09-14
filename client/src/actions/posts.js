@@ -12,6 +12,7 @@ export const fetchPosts = () => async dispatch => {
   });
 };
 
+// Adding posts here
 export const addPost = value => async dispatch => {
   try {
     const addPost = await api.addPost(value);
@@ -25,10 +26,20 @@ export const addPost = value => async dispatch => {
   }
 };
 
+// Fetching single post when we click on a particular word.
 export const fetchSinglePost = id => async dispatch => {
   const fetchPost = await api.fetchSinglePost(id);
   dispatch({
     type: FETCH_POST,
     payload: fetchPost.data,
+  });
+};
+
+// Searching the word from database.
+export const searchByName = name => async dispatch => {
+  const fetchPosts = await api.searchByName(name);
+  dispatch({
+    type: FETCH_POSTS,
+    payload: fetchPosts.data,
   });
 };
